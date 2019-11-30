@@ -42,7 +42,7 @@ class Course(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.title} курс {self.faculty.acronym}"
+        return f"{self.title}"
 
 
 # class EducationForm(models.Model):

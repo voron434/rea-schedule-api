@@ -1,15 +1,16 @@
-from django.shortcuts import render
+import json
 
-from django.http import JsonResponse
+
+from django.http import JsonResponse, HttpResponse
 
 from schedule import serializers
 from schedule import models
-# Create your views here.
 
 
 def groups_list(request):
     groups = models.Group.objects.all()
     json_stats = serializers.GroupSerializer(groups, many=len(groups) > 1).data
     response = {'success': True, 'stats': json_stats}
-    print(response)
-    return JsonResponse(response)
+    return HttpResponse(json.dumps(response, ensure_ascii=False),
+                        content_type="application/json")
+    # return JsonResponse(response, safe=False)
