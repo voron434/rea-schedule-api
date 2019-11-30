@@ -22,6 +22,7 @@ class Command(BaseCommand):
     @transaction.non_atomic_requests
     def handle(self, *args, **options):
         dump_path = options['path'] if 'path' in options.keys() else XML_PATH
+        models.Lesson.objects.all().delete()
         if dump_path and os.path.exists(dump_path):
             filenames = [join(dump_path, f) for f in os.listdir(dump_path) if isfile(join(dump_path, f))]
         else:
@@ -42,6 +43,7 @@ class Command(BaseCommand):
         faculty, is_created = models.Faculty.objects.get_or_create(title=faculty_title)
         course, is_created = models.Course.objects.get_or_create(faculty=faculty, title=course_title)
         group, is_created = models.Group.objects.get_or_create(course=course, title=group_title)
+        all_lessons = []
         for week in xml_root:
             week_num = week.attrib['Ном']
             for lesson in week:
@@ -60,7 +62,8 @@ class Command(BaseCommand):
                 teacher_name = lesson[6].text
                 teacher, is_created = models.Teacher.objects.get_or_create(name=teacher_name)
                 
-                lesson, is_created = models.Lesson.objects.get_or_create(
+
+                lesson = models.Lesson(
                     teacher=teacher,
                     group=group,
                     week=week_num,
@@ -71,3 +74,5 @@ class Command(BaseCommand):
                     title=lesson_title,
                     lesson_type=lesson_type,
                 )
+                all_lessons.append(lesson)
+        models.Lesson.objects.bulk_create(all_lessons)
