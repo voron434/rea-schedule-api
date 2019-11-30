@@ -17,7 +17,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'shedule'
+    'rest_framework',
+
+    'schedule',
 ]
 
 MIDDLEWARE = [
