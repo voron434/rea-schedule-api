@@ -57,7 +57,19 @@ def courses_list(request):
     except ObjectDoesNotExist:
         raise Http404()
 
-    
+def groups_by_course(request):
+    try:
+        faculty_name = request.GET.get("faculty")
+        course = request.GET.get("course")
+        faculty = models.Faculty.objects.filter(title = faculty_name).get()
+        courses = models.Course.objects.filter(faculty = faculty)
+        groups = models.Group.objects.filter(course = course)  
+        json_stats = serializers.GroupsByCourse(groups, many=len(groups) > 1).data
+        response = {'success': True, 'stats': json_stats}
+        return HttpResponse(json.dumps(response, ensure_ascii=False), content_type="application/json")
+        
+    except ObjectDoesNotExist:
+        raise Http404()
 
 
 

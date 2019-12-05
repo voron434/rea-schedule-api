@@ -39,6 +39,10 @@ class CourseSerializer(serializers.ModelSerializer):
         fields = ['title','faculty', 'updated'] 
 
 
-# class ToGroupWalkerSerializer(serializers.ModelSerializer):
+class GroupsByCourse(serializers.ModelSerializer):
+    course = CourseSerializer()
+    faculty = FacultySerializer()
 
-#     class Meta:
+    class Meta:
+        model = Group
+        fields = ['title', 'faculty', 'course', 'updated']
