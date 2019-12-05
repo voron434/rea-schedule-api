@@ -27,8 +27,8 @@ def list_shedule(request):
     Отдать расписание на текущую неделю по имени группы
     """
     group_name = "291Д-07ИБ/16"
-    group = models.Group.objects.get(title = group_name).values_list('id', flat=True).get()
-    lessons = models.Lesson.objects.filter(group = group_id)
+    group = models.Group.objects.values_list('id', flat=True).filter(title = group_name).get()
+    lessons = models.Lesson.objects.filter(group = group)
 
     json_stats = serializers.LessonSerializer(lessons, many=len(lessons) > 1).data
     response = {'success': True, 'stats': json_stats}

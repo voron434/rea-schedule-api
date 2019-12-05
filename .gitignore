@@ -3,3 +3,4 @@ db.sqlite3
 files/
 venv/
 .DS_Store
+parse_xml.py
