@@ -1,12 +1,19 @@
 import os
+from dotenv import load_dotenv
+from environs import Env
+import dj_database_url
+
+load_dotenv()
+env = Env()
+env.read_env()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = '2=r0u@g=mge1*6dk!eblvf+zj_(qf18_bepqaj=cax*q&0+=86'
+SECRET_KEY = os.getenv('SECRET_KEY', 'REPLACE_ME')
 
-DEBUG = True
+DEBUG = env.bool("DEBUG", True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [os.getenv('PROD_HOST', 'localhost'), ]
 
 
 INSTALLED_APPS = [
@@ -52,11 +59,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
+DATABASE_PATH = os.getenv('DATABASE_PATH', 'sqlite:///db.sqlite3')
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': dj_database_url.config(default=DATABASE_PATH)
 }
 
 AUTH_PASSWORD_VALIDATORS = [
