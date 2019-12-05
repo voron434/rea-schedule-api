@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from schedule.models import Group, Lesson
+from schedule.models import Group, Lesson, Faculty
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -14,10 +14,18 @@ class GroupSerializer(serializers.ModelSerializer):
 
 class LessonSerializer(serializers.ModelSerializer):
     group = GroupSerializer()
+    # week = 
 
-    class Meta:
+    class Meta():
         model = Lesson
         fields = [
             'teacher', 'group', 'week',
             'subgroup', 'classroom', 'date',
             'lesson_num', 'title', 'lesson_type', 'updated']
+
+
+class FacultySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Faculty
+        fields = ['title', 'updated']
