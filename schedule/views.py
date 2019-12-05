@@ -10,9 +10,9 @@ from schedule import models
 
 from django.utils import timezone
 
-# def get_week():
-#     first_september = 
-#     return week
+ # def get_week():
+     # first_september = datetime.datetime(2019, 9, 1)
+     # return week
 
 def groups_list(request):
     groups = models.Group.objects.all()
@@ -36,7 +36,7 @@ def list_shedule(request):
         group_id = models.Group.objects.values_list('id', flat=True).filter(title = group).get()
         lessons = models.Lesson.objects.filter(group = group_id)
     except ObjectDoesNotExist:
-        raise Http404("Poll does not exist")
+        raise Http404()
     
 
     json_stats = serializers.LessonSerializer(lessons, many=len(lessons) > 1).data
