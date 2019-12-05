@@ -43,3 +43,24 @@ def list_shedule(request):
     json_stats = serializers.LessonSerializer(lessons, many=len(lessons) > 1).data
     response = {'success': True, 'stats': json_stats}
     return HttpResponse(json.dumps(response, ensure_ascii=False), content_type="application/json")
+
+def courses_list(request):
+    
+    try:
+        faculty_name = request.GET.get("faculty")
+        faculty = models.Faculty.objects.filter(title = faculty_name).get()
+        course = models.Course.objects.filter(faculty = faculty)
+        json_stats = serializers.CourseSerializer(course, many=len(course) > 1).data
+        response = {'success': True, 'stats': json_stats}
+        return HttpResponse(json.dumps(response, ensure_ascii=False), content_type="application/json")
+        
+    except ObjectDoesNotExist:
+        raise Http404()
+
+    
+
+
+
+
+
+
