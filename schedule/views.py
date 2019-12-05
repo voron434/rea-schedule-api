@@ -2,12 +2,17 @@ import json
 
 
 from django.http import JsonResponse, HttpResponse
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
 
 from schedule import serializers
 from schedule import models
 
 from django.utils import timezone
 
+# def get_week():
+#     first_september = 
+#     return week
 
 def groups_list(request):
     groups = models.Group.objects.all()
@@ -26,9 +31,13 @@ def list_shedule(request):
     """
     Отдать расписание на текущую неделю по имени группы
     """
-    group = request.GET.get("group")
-    group_id = models.Group.objects.values_list('id', flat=True).filter(title = group).get()
-    lessons = models.Lesson.objects.filter(group = group_id)
+    try:
+        group = request.GET.get("group")
+        group_id = models.Group.objects.values_list('id', flat=True).filter(title = group).get()
+        lessons = models.Lesson.objects.filter(group = group_id)
+    except ObjectDoesNotExist:
+        raise Http404("Poll does not exist")
+    
 
     json_stats = serializers.LessonSerializer(lessons, many=len(lessons) > 1).data
     response = {'success': True, 'stats': json_stats}
