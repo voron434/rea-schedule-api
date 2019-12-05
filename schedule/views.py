@@ -8,11 +8,12 @@ from django.http import Http404
 from schedule import serializers
 from schedule import models
 
-from django.utils import timezone
+from datetime import datetime
 
- # def get_week():
-     # first_september = datetime.datetime(2019, 9, 1)
-     # return week
+
+def get_week():
+    current_week = datetime.now().isocalendar()[1]
+    return current_week
 
 def groups_list(request):
     groups = models.Group.objects.all()
@@ -34,7 +35,7 @@ def list_shedule(request):
     try:
         group = request.GET.get("group")
         group_id = models.Group.objects.values_list('id', flat=True).filter(title = group).get()
-        lessons = models.Lesson.objects.filter(group = group_id)
+        lessons = models.Lesson.objects.filter(group = group_id, week = get_week())
     except ObjectDoesNotExist:
         raise Http404()
     
