@@ -13,7 +13,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'REPLACE_ME')
 
 DEBUG = env.bool("DEBUG", True)
 
-ALLOWED_HOSTS = [os.getenv('PROD_HOST', 'localhost'), ]
+ALLOWED_HOSTS = [os.getenv('PROD_HOST', 'localhost'), "127.0.0.1"]
 
 
 INSTALLED_APPS = [
