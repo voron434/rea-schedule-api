@@ -25,7 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
-
+    'rest_framework.authtoken',
     'schedule',
 ]
 
@@ -93,3 +93,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 XML_PATH = '/home/1c_rea/ftp/files/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated', )
+}
