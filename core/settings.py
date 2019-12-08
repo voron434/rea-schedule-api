@@ -93,7 +93,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 XML_PATH = '/home/1c_rea/ftp/files/'
-
+'''
+token = KpuR2Syn.Q2qJIn2VSKl03ETJqJ14QOMjuqYfI3o5.
+'''
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework_api_key.permissions.HasAPIKey",

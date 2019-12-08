@@ -24,7 +24,6 @@ from rest_framework.response import Response
 
 
 class AuthenticatedView(APIView):
-    permission_classes = [HasAPIKey]
 
     def login(request):
         username = request.data.get("username")
@@ -58,41 +57,34 @@ class AuthenticatedView(APIView):
         return HttpResponse(json.dumps(response, ensure_ascii=False), content_type="application/json")
 
     def list_shedule(request):
-        """
-        Отдать расписание на текущую неделю по имени группы
-        """
+        group = request.GET.get("group")
         try:
-            group = request.GET.get("group")
             group_id = models.Group.objects.values_list('id', flat=True).filter(title = group).get()
             lessons = models.Lesson.objects.filter(group = group_id, week = get_week())
         except ObjectDoesNotExist:
             raise Http404()
-        
-
         json_stats = serializers.LessonSerializer(lessons, many=len(lessons) > 1).data
         response = {'success': True, 'stats': json_stats}
         return HttpResponse(json.dumps(response, ensure_ascii=False), content_type="application/json")
 
     def courses_list(request):
-        
+        faculty_name = request.GET.get("faculty")
         try:
-            faculty_name = request.GET.get("faculty")
             faculty = models.Faculty.objects.filter(title = faculty_name).get()
             course = models.Course.objects.filter(faculty = faculty)
-            json_stats = serializers.CourseSerializer(course, many=len(course) > 1).data
-            response = {'success': True, 'stats': json_stats}
-            return HttpResponse(json.dumps(response, ensure_ascii=False), content_type="application/json")
-            
         except ObjectDoesNotExist:
             raise Http404()
+        json_stats = serializers.CourseSerializer(course, many=len(course) > 1).data
+        response = {'success': True, 'stats': json_stats}
+        return HttpResponse(json.dumps(response, ensure_ascii=False), content_type="application/json")
 
     def groups_by_course(request):
+        faculty_name = request.GET.get("faculty")
+        course = request.GET.get("course")
         try:
-            faculty_name = request.GET.get("faculty")
-            course = request.GET.get("course")
             faculty = models.Faculty.objects.filter(title = faculty_name).get()
             courses = models.Course.objects.filter(faculty = faculty)
-            groups = models.Group.objects.filter(course = course)  
+            groups = models.Group.objects.filter(course = course)
             json_stats = serializers.GroupsByCourse(groups, many=len(groups) > 1).data
             response = {'success': True, 'stats': json_stats}
             return HttpResponse(json.dumps(response, ensure_ascii=False), content_type="application/json")
