@@ -4,3 +4,4 @@ files/
 venv/
 .DS_Store
 parse_xml.py
+.env
