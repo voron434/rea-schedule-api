@@ -24,6 +24,7 @@ LESSON_TIMES = (
     "15:40 - 17:10", "17:20 - 18:50", "18:55 - 20:25", "20:30 - 22:00",
 )
 
+
 class Faculty(models.Model):
     title = models.CharField(max_length=150)
     updated = models.DateTimeField(auto_now=True)
@@ -33,7 +34,10 @@ class Faculty(models.Model):
 
     @property
     def acronym(self):
-        return FACULTY_ACRONYMS[self.title] 
+        if self.title in FACULTY_ACRONYMS.keys():
+            return FACULTY_ACRONYMS[self.title] 
+        else:
+            return [word[0] for word in self.title.upper().split()]
 
 
 class Course(models.Model):
