@@ -58,6 +58,9 @@ def list_shedule(request):
     response = {'success': True, 'stats': json_stats}
     return HttpResponse(json.dumps(response, ensure_ascii=False), content_type="application/json")
 
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def courses_list(request):
     
     try:
@@ -71,6 +74,9 @@ def courses_list(request):
     except ObjectDoesNotExist:
         raise Http404()
 
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def groups_by_course(request):
     try:
         faculty_name = request.GET.get("faculty")
