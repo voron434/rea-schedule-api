@@ -14,7 +14,6 @@ class GroupSerializer(serializers.ModelSerializer):
 
 class LessonSerializer(serializers.ModelSerializer):
     group = GroupSerializer()
-    # week = 
 
     class Meta():
         model = Lesson
@@ -36,7 +35,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ['title','faculty', 'updated'] 
+        fields = ['title', 'faculty', 'updated']
 
 
 class GroupsByCourse(serializers.ModelSerializer):
