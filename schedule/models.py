@@ -98,6 +98,9 @@ class Сlassroom(models.Model):
     campus = models.CharField(max_length=50)
     updated = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"{self.room_num}"
+
 
 class Lesson(models.Model):
     teacher = models.ForeignKey(Teacher, null=True, blank=True, on_delete=models.SET_NULL)
