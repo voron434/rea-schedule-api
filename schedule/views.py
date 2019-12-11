@@ -48,8 +48,17 @@ def list_schedule(request):
         group = models.Group.objects.get(title=group_title)
     except ObjectDoesNotExist:
         raise Http404("Group does not exist")
-    lessons = models.Lesson.objects.filter(group=group, week=get_week())
-    json_stats = serializers.LessonSerializer(lessons, many=len(lessons) > 1).data
+    week = request.GET.get("week")
+    if week == None:
+        week = get_week()
+    elif week == 'next':
+        week = get_week() + 1
+    lessons = models.Lesson.objects.filter(group=group, week=week)
+    try: 
+        json_stats = serializers.LessonSerializer(lessons, many=len(lessons) > 1).data
+    except:
+        raise Http404("Week does not exist")
+    # lessons = models.Lesson.objects.filter(group=group, week=week)
     response = {'success': True, 'stats': json_stats}
     return HttpResponse(
         json.dumps(response, ensure_ascii=False),
